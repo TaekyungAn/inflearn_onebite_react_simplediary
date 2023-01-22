@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useState } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCreate }) => {
   const authorInput = useRef();
   const contentInput = useRef();
 
@@ -16,6 +16,7 @@ const DiaryEditor = () => {
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = () => {
     if (state.author.length < 1) {
       //focus
@@ -26,8 +27,13 @@ const DiaryEditor = () => {
       contentInput.current.focus();
       return;
     }
+    // 일기가 저장될 때 App컴포넌트의 setData를 호출하는 onCreate함수에 data를 보냄
+    onCreate(state.author, state.content, state.emotion);
     alert("저장 성공");
+    // 작성 후 초기화
+    setState({ author: "", content: "", emotion: 1 });
   };
+
   return (
     <div className="DiaryEditor">
       <h2>오늘의 일기</h2>
