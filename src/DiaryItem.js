@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const DiaryItem = ({
   author,
@@ -16,7 +16,6 @@ const DiaryItem = ({
   const localContentInput = useRef();
 
   const handleRemove = () => {
-    console.log(id);
     if (window.confirm(`${id}번째 일기 삭제?`)) onRemove(id);
   };
 
@@ -38,22 +37,24 @@ const DiaryItem = ({
 
   return (
     <div className="DiaryItem">
-      <span className="info">
-        작성자 : {author} | 감정점수 : {emotion}
-      </span>
-      <br />
-      <span className="date">{new Date(created_date).toLocaleString()}</span>
+      <div className="info">
+        <span className="author_info">
+          작성자 : {author} | 감정점수 : {emotion}
+        </span>
+        <br />
+        <span className="date">
+          {new Date(created_date).toLocaleDateString()}
+        </span>
+      </div>
       <div className="content">
         {isEdit ? (
-          <>
-            <textarea
-              ref={localContentInput}
-              value={localContent}
-              onChange={(e) => setLocalContent(e.target.value)}
-            />
-          </>
+          <textarea
+            ref={localContentInput}
+            value={localContent}
+            onChange={(e) => setLocalContent(e.target.value)}
+          />
         ) : (
-          <>{content}</>
+          content
         )}
       </div>
       {isEdit ? (
@@ -70,4 +71,4 @@ const DiaryItem = ({
     </div>
   );
 };
-export default DiaryItem;
+export default React.memo(DiaryItem);
